@@ -1,19 +1,19 @@
-import React, {useEffect, useMemo, useReducer} from 'react';
-import {View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import SplashScreen from './screens/SplashScreen';
-import HomeScreen from './screens/HomeScreen';
-import RootStackScreen from './screens/RootStackScreen';
-import BottomTabScreen from './screens/BottomTabScreen';
-import AsyncStorage from '@react-native-community/async-storage';
-import {AuthContext} from './Context';
-import Axios from 'axios';
-import ProfileFirstSetScreen from './screens/ProfileFirstSetScreen';
+import React, { useEffect, useMemo, useReducer } from "react";
+import { View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import SplashScreen from "./screens/SplashScreen";
+import HomeScreen from "./screens/HomeScreen";
+import RootStackScreen from "./screens/RootStackScreen";
+import BottomTabScreen from "./screens/BottomTabScreen";
+import AsyncStorage from "@react-native-community/async-storage";
+import { AuthContext } from "./Context";
+import Axios from "axios";
+import ProfileFirstSetScreen from "./screens/ProfileFirstSetScreen";
 
 export default function App() {
   const initialLoginState = {
-    username: '',
-    gender: '',
+    username: "",
+    gender: "",
     access_token: null,
     refresh_token: null,
     isLoading: false,
@@ -22,20 +22,20 @@ export default function App() {
   const loginReucer = (prevState, action) => {
     switch (action.type) {
       //이전에 로그인한적있으면 토큰 검색하는것
-      case 'RETRIEVE_TOKEN':
+      case "RETRIEVE_TOKEN":
         return {
           ...prevState,
           access_token: action.access_token,
           refresh_token: action.refresh_token,
           isLoading: false,
         };
-      case 'LOGIN':
+      case "LOGIN":
         return {
           ...prevState,
           ...action.user,
           isLoading: false,
         };
-      case 'LOGOUT':
+      case "LOGOUT":
         return {
           ...prevState,
           username: null,
@@ -58,19 +58,19 @@ export default function App() {
     () => ({
       signIn: async (user) => {
         try {
-          dispatch({type: 'LOGIN', user});
-          await AsyncStorage.setItem('userInfo', user);
+          dispatch({ type: "LOGIN", user });
+          await AsyncStorage.setItem("userInfo", user);
         } catch (e) {
           console.log(e);
         }
       },
       signOut: async () => {
         try {
-          await AsyncStorage.removeItem('userInfo');
+          await AsyncStorage.removeItem("userInfo");
         } catch (e) {
           console.log(e);
         }
-        dispatch({type: 'LOGOUT'});
+        dispatch({ type: "LOGOUT" });
       },
       signUp: (username, password) => {
         // setUserToken('tkasd');
@@ -83,7 +83,7 @@ export default function App() {
         //   });
       },
     }),
-    [],
+    []
   );
 
   // useEffect(() => {
@@ -105,13 +105,13 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={{authContext, loginState}}>
+    <AuthContext.Provider value={{ authContext, loginState }}>
       <NavigationContainer>
         {loginState.access_token !== null ? (
           <BottomTabScreen />
         ) : (
-          <ProfileFirstSetScreen />
-          // <RootStackScreen />
+          // <ProfileFirstSetScreen />
+          <RootStackScreen />
         )}
       </NavigationContainer>
     </AuthContext.Provider>
