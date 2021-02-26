@@ -1,12 +1,13 @@
-import React from 'react';
-import {Dimensions} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ChatScreen from './ChatScreen';
-import ProfileScreen from './ProfileScreen';
-import HomeScreen from './HomeScreen';
-import TopTabScreen from './TopTabScreen';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {createStackNavigator} from '@react-navigation/stack';
+import React from "react";
+import { Dimensions } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import ChatScreen from "./ChatScreen";
+import ProfileScreen from "./ProfileScreen";
+import HomeScreen from "./HomeScreen";
+import TopTabScreen from "./TopTabScreen";
+import Icon from "react-native-vector-icons/Ionicons";
+import { createStackNavigator } from "@react-navigation/stack";
+import BuyDetail from "./BuyDetail";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -15,18 +16,19 @@ function BottomTabScreen() {
     <BottomTab.Navigator
       initialRouteName="Home"
       tabBarOptions={{
-        activeTintColor: '#1ABC9C',
-        style: {height: 48},
+        activeTintColor: "#1ABC9C",
+        style: { height: 51 },
         showLabel: false,
         headerTitle: true,
-      }}>
+      }}
+    >
       <BottomTab.Screen
         name="Home"
         component={BuyStackScreen}
         options={{
-          title: 'Home',
-          tabBarColor: '#009387',
-          tabBarIcon: ({color}) => (
+          title: "Home",
+          tabBarColor: "#009387",
+          tabBarIcon: ({ color }) => (
             <Icon name="home-outline" color={color} size={28} />
           ),
         }}
@@ -35,15 +37,15 @@ function BottomTabScreen() {
         name="Chat"
         component={ChatStackScreen}
         options={{
-          tabBarLabel: 'Chat',
-          tabBarColor: '#d02860',
-          tabBarIcon: ({color}) => (
+          tabBarLabel: "Chat",
+          tabBarColor: "#d02860",
+          tabBarIcon: ({ color }) => (
             <Icon name="chatbubble-ellipses-outline" color={color} size={28} />
           ),
-          title: '홈',
+          title: "홈",
           headerTitleStyle: {
-            fontWeight: 'bold',
-            alignSelf: 'center',
+            fontWeight: "bold",
+            alignSelf: "center",
             fontSize: 21,
           },
         }}
@@ -52,9 +54,9 @@ function BottomTabScreen() {
         name="MyProfile"
         component={ProfileStackScreen}
         options={{
-          tabBarLabel: 'Profile',
-          tabBarColor: '#694fad',
-          tabBarIcon: ({color}) => (
+          tabBarLabel: "Profile",
+          tabBarColor: "#694fad",
+          tabBarIcon: ({ color }) => (
             <Icon name="person-outline" color={color} size={28} />
           ),
         }}
@@ -67,18 +69,18 @@ export default BottomTabScreen;
 
 const BuyStack = createStackNavigator();
 
-function BuyStackScreen({navigation}) {
+function BuyStackScreen({ navigation }) {
   return (
     <BuyStack.Navigator>
       <BuyStack.Screen
         name="TopTab"
         component={TopTabScreen}
         options={{
-          title: '홈',
+          title: "홈",
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: "bold",
             fontSize: 21,
-            alignSelf: 'center',
+            alignSelf: "center",
           },
         }}
       />
@@ -88,18 +90,18 @@ function BuyStackScreen({navigation}) {
 
 const ChatStack = createStackNavigator();
 
-function ChatStackScreen({navigation}) {
+function ChatStackScreen({ navigation }) {
   return (
     <ChatStack.Navigator>
       <ChatStack.Screen
         name="Chat"
         component={ChatScreen}
         options={{
-          title: '채팅',
+          title: "채팅",
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: "bold",
             fontSize: 21,
-            alignSelf: 'center',
+            alignSelf: "center",
           },
         }}
       />
@@ -109,18 +111,18 @@ function ChatStackScreen({navigation}) {
 
 const ProfileStack = createStackNavigator();
 
-function ProfileStackScreen({navigation}) {
+function ProfileStackScreen({ navigation }) {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
         name="Profiles"
         component={ProfileScreen}
         options={{
-          title: '마이 페이지',
+          title: "마이 페이지",
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: "bold",
             fontSize: 21,
-            alignSelf: 'center',
+            alignSelf: "center",
           },
         }}
       />

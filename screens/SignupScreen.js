@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import styled from 'styled-components/native';
-import Button from '../components/Button';
-import TextInput from '../components/TextInput';
+import React, { useState } from "react";
+import styled from "styled-components/native";
+import Button from "../components/Button";
+import TextInput from "../components/TextInput";
 // import Axios from 'axios';
-import {axiosInstance} from '../api';
-import {AuthContext} from '../Context';
+import { axiosInstance } from "../api";
+import { AuthContext } from "../Context";
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -19,20 +19,20 @@ const Text = styled.Text`
   color: #fff;
 `;
 
-export default function SignupScreen({navigation}) {
+export default function SignupScreen({ navigation }) {
   const [data, setData] = useState({
-    phone_number: '',
-    auth_number: '',
+    phone_number: "",
+    auth_number: "",
     check_textInputChange: false,
   });
 
-  const {authContext} = React.useContext(AuthContext);
-  const {signIn} = authContext;
+  const { authContext } = React.useContext(AuthContext);
+  const { signIn } = authContext;
 
   const sendPhoneNumHandler = (phone_number) => {
-    let dataToSend = {phone_number: phone_number};
+    let dataToSend = { phone_number: phone_number };
     axiosInstance
-      .post('/v1/accounts/auth/', dataToSend)
+      .post("/v1/accounts/auth/", dataToSend)
       .then()
       .catch((error) => {
         console.log(error);
@@ -40,16 +40,18 @@ export default function SignupScreen({navigation}) {
   };
 
   const AuthNumberHandler = (phone_number, auth_number) => {
-    let dataToSend = {phone_number: phone_number, auth_number: auth_number};
+    let dataToSend = { phone_number: phone_number, auth_number: auth_number };
     axiosInstance
-      .post('/v1/accounts/auth/verify/', dataToSend)
+      .post("/v1/accounts/auth/verify/", dataToSend)
       .then((response) => {
-        const {is_signed, user} = response.data;
+        const { is_signed, user } = response.data;
         if (is_signed) {
-          navigation.navigate('Home');
+          navigation.navigate("Home1", { user: user });
           signIn(user);
         } else {
-          navigation.navigate('FirstProfile');
+          navigation.navigate("FirstProfile", {
+            phone_number: data.phone_number,
+          });
         }
       })
       .catch((error) => {
@@ -83,7 +85,7 @@ export default function SignupScreen({navigation}) {
   return (
     <Container>
       <TextInput
-        style={{marginBottom: 15}}
+        style={{ marginBottom: 15 }}
         placeholder="휴대폰 번호를 입력해주세요"
         onChangeText={(val) => textInputChange(val)}
       />
@@ -91,13 +93,19 @@ export default function SignupScreen({navigation}) {
         <Text>인증문자 받기</Text>
       </Button>
       <TextInput
-        style={{marginTop: 15, marginBottom: 15}}
+        style={{ marginTop: 15, marginBottom: 15 }}
         placeholder="인증번호를 입력해주세요"
         onChangeText={(val) => handleAuthNumberChange(val)}
       />
       <Button
         color="#81d4fa"
-        onPress={() => AuthNumberHandler(data.phone_number, data.auth_number)}>
+        // onPress={() =>
+        //   navigation.navigate("FirstProfile", {
+        //     phone_number: data.phone_number,
+        //   })
+        // }
+        onPress={() => AuthNumberHandler(data.phone_number, data.auth_number)}
+      >
         <Text>동의하고 시작 !</Text>
       </Button>
     </Container>
