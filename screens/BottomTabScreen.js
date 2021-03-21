@@ -8,6 +8,7 @@ import TopTabScreen from "./TopTabScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import BuyDetail from "./BuyDetail";
+import CreateBuyPost from "./CreateBuyPost";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -84,6 +85,7 @@ function BuyStackScreen({ navigation }) {
           },
         }}
       />
+			
     </BuyStack.Navigator>
   );
 }

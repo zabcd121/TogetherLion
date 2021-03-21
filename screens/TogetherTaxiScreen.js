@@ -14,6 +14,8 @@ import axios from "axios";
 import { remainTimeParser, hello, createdTimeParser } from "../timeUtils";
 import PersonIcon from "../components/PersonIcon";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import TaxiPersonIcon from "../components/TaxiPersonIcon";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -94,19 +96,28 @@ const DateBlock = styled.View`
   height: 30%;
   flex-direction: row;
   align-items: center;
+  padding-right: 4%;
 `;
 const TimeBlock = styled.View`
+  width: 100%;
+  height: 28%;
+`;
+const BottomBlock = styled.View`
+  flex-direction: row;
   width: 100%;
   height: 35%;
 `;
 const Person = styled.View`
-  margin: 10px 0;
+  margin: 5.5% 0;
   flex-direction: row;
+  width: 70%;
+  height: 100%;
 `;
 
-const IconBlock = styled.View`
-  flex-direction: row;
-  width: 50%;
+const GenderBlock = styled.View`
+  margin: 5.5% 18%;
+  width: 30%;
+  height: 100%;
 `;
 const DateNumber = styled.View`
   width: 85%;
@@ -114,9 +125,28 @@ const DateNumber = styled.View`
 
 function TogetherBuyScreen({ navigation }) {
   const renderItem = ({ item }) => {
+    let deadline = item.deadline;
+    let year = deadline.substring(0, 4);
+    let month = deadline.substring(5, 7);
+    let day = deadline.substring(8, 10);
+    let hour = deadline.substring(11, 13);
+    let minute = deadline.substring(14, 16);
+    let second = deadline.substring(17, 19);
+    if (hour === "12" && minute === "00" && second === "00") {
+      hour = "오후 12";
+    } else if (hour === "24" && minute === "00" && second === "00") {
+      hour = "오전 12";
+    } else if (hour == "12" && minute >= 1) {
+      hour = "오후 12";
+    } else if (hour >= 12 && hour < 24) {
+      hour = "오후 " + (parseInt(hour) - 12);
+    } else if (hour < 12 && hour > 0) {
+      hour = "오전 " + parseInt(hour);
+    }
+
     return (
       <ListItem
-        onPress={() => navigation.navigate("BuyDetail", { item: item })}
+        onPress={() => navigation.navigate("TaxiDetail", { item: item })}
       >
         <LeftBlock>
           <StartLocation>
@@ -143,7 +173,7 @@ function TogetherBuyScreen({ navigation }) {
               style={{ fontSize: 17, fontWeight: "bold" }}
               numberOfLines={2}
             >
-              금오공과대학교 오름생활관앞2동
+              {item.arrival_place}
             </Text>
           </Top>
           <Bottom>
@@ -151,7 +181,7 @@ function TogetherBuyScreen({ navigation }) {
               style={{ fontSize: 17, fontWeight: "bold" }}
               numberOfLines={2}
             >
-              옥계중학교앞 신나리아파트1차asd
+              {item.departure_place}
             </Text>
           </Bottom>
         </MiddleBlock>
@@ -161,17 +191,46 @@ function TogetherBuyScreen({ navigation }) {
               <Text
                 style={{ fontSize: 15, fontWeight: "bold", color: "#424242" }}
               >
-                3월 1일
+                {month}월 {day}일
               </Text>
             </DateNumber>
-            <Text style={{ fontSize: 11, color: "#9e9e9e" }}>35분전</Text>
+            <Text style={{ fontSize: 11, color: "#9e9e9e" }}>
+              {createdTimeParser(item.created_at)}
+            </Text>
           </DateBlock>
           <TimeBlock>
             <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-              오후 6시 30분
+              {hour}시 {minute}분
             </Text>
           </TimeBlock>
-          <Person></Person>
+          <BottomBlock>
+            <Person>
+              {item.gender_limitation === "F" ? (
+                <Ionicons name="person" color="#1ABC9C" size={32} />
+              ) : item.gender_limitation === "T" &&
+                item.author.gender === "M" ? (
+                <Ionicons name="person" color="#638FE3" size={32} />
+              ) : (
+                <Ionicons name="person" color="#F588DD" size={32} />
+              )}
+              <TaxiPersonIcon
+                gender_limitation={item.gender_limitation}
+                gender={item.author.gender}
+                item={item}
+                size={32}
+              />
+            </Person>
+            <GenderBlock>
+              {item.gender_limitation === "F" ? (
+                <Ionicons name="bookmarks" color="#1ABC9C" size={30} />
+              ) : item.gender_limitation === "T" &&
+                item.author.gender === "M" ? (
+                <Ionicons name="bookmarks" color="#638FE3" size={30} />
+              ) : (
+                <Ionicons name="bookmarks" color="#F588DD" size={30} />
+              )}
+            </GenderBlock>
+          </BottomBlock>
         </RightBlock>
       </ListItem>
     );
@@ -193,7 +252,7 @@ function TogetherBuyScreen({ navigation }) {
     setLoading(true);
     console.log(headers);
     axiosInstance({
-      url: "/v1/posts/purchase/",
+      url: "/v1/posts/taxi/",
       method: "GET",
       headers,
     })
@@ -243,7 +302,7 @@ function TogetherBuyScreen({ navigation }) {
 
 /*  */
 
-export default TogetherBuyScreen;
+export default React.memo(TogetherBuyScreen);
 
 const styles = StyleSheet.create({
   container: {

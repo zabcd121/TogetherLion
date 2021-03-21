@@ -15,6 +15,8 @@ import axios from "axios";
 import { remainTimeParser, hello, createdTimeParser } from "../timeUtils";
 import PersonIcon from "../components/PersonIcon";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import PostPlusButton from "../components/PostPlusButton";
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -188,8 +190,27 @@ function TogetherBuyScreen({ navigation }) {
         // onEndReached={onEndReached}
         // onEndReachedThreshold={0.8}
         ListFooterComponent={loading && <ActivityIndicator />}
+        windowSize={1}
       ></Contents>
-
+			<View
+      style={{
+        position: "absolute",
+        bottom: "3%",
+        right: "2%",
+        paddingTop: 4,
+        paddingRight: 6,
+        paddingBottom: 4,
+        paddingLeft: 10,
+        borderTopLeftRadius: 14,
+        borderBottomLeftRadius: 14,
+        backgroundColor: "yeloow",
+      }}
+      >
+				<PlusCircle onPress={()=>navigation.navigate("CreateBuyPost")}>
+					<AntDesign name="pluscircleo" size={60} color="#f5f5f5" />
+				</PlusCircle>
+      {/* <PostPlusButton  onPress={() => navigation.navigate("CreateBuyPost")} /> */}
+		</View>
       {/* <Text>{JSON.stringify(loginState)}</Text>
       <Button title="click" /> */}
     </Container>
@@ -198,7 +219,12 @@ function TogetherBuyScreen({ navigation }) {
 
 /*  */
 
-export default TogetherBuyScreen;
+export default React.memo(TogetherBuyScreen);
+
+const PlusCircle = styled.TouchableOpacity`
+  background: #1abc9c;
+  border-radius: 30;
+`;
 
 const styles = StyleSheet.create({
   container: {

@@ -23,6 +23,7 @@ import PersonIcon from "../components/PersonIcon";
 import Participant from "../components/Participant";
 import HeaderTime from "../components/HeaderTime";
 import BuyComment from "../components/BuyComment";
+import TaxiComment from "../components/TaxiComment";
 
 // const { wp } = Dimensions.get("screen").width;
 // const { hp } = Dimensions.get("screen").height;
@@ -64,35 +65,20 @@ const Profile = styled.View`
   margin-bottom: 13px;
 `;
 const ProfleImgCircle = styled.TouchableOpacity`
-  width: ${(props) => props.width || "14%"};
+  width: ${(props) => props.width || "80%"};
   height: 100%;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+`;
+const CreateParser = styled.View`
+  width: 19%;
+  height: 100%;
+  align-items: flex-end;
+  justify-content: center;
 `;
 const MainContents = styled.View`
   padding: 0 8px;
   width: 100%;
-`;
-
-const ImageSliderBlock = styled.TouchableOpacity`
-  width: 100%;
-  height: 350px;
-  margin-top: 10px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ImageScrollView = styled.ScrollView`
-  flex: 1;
-  overflow: hidden;
-  background: orange;
-  position: relative;
-  margin: 10px;
-`;
-
-const ProductImage = styled.Image`
-  flex: 1;
 `;
 
 const Bottom = styled.View`
@@ -126,25 +112,75 @@ const PersonNumberBlock = styled.View`
   justify-content: center;
   align-items: flex-end;
 `;
+const FirsttBlock = styled.View`
+  width: 10%;
+  height: 100%;
+  flex-direction: column;
+  padding: 2% 0;
+  margin-right: 20px;
+`;
+const StartLocation = styled.View`
+  width: 100%;
+  height: 25%;
+  justify-content: flex-end;
+  align-items: center;
+`;
+const Row = styled.View`
+  width: 100%;
+  height: 50%;
+  justify-content: center;
+  align-items: center;
+`;
+const Destination = styled.View`
+  width: 100%;
+  height: 25%;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const MiddleBlock = styled.View`
+  width: 90%;
+  height: 100%;
+  margin-left: 5px;
+  flex-direction: column;
+  padding-right: 2%;
+`;
+
+const TopLocation = styled.View`
+  width: 100%;
+  height: 50%;
+  padding-top: 2%;
+  justify-content: flex-start;
+
+  margin-bottom: 1%;
+`;
+const BottomLocation = styled.View`
+  width: 100%;
+  height: 50%;
+
+  justify-content: center;
+`;
+
+const InformationBlock = styled.View`
+  width: 100%;
+  height: 130px;
+  padding: 10px;
+  border: 1px solid #bdbdbd;
+  border-bottom-color: #bdbdbd;
+  border-bottom-width: 4px;
+  margin-bottom: 5%;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 15px;
+`;
 
 const { width } = Dimensions.get("window");
 // const height = width * 0.6; // 60%;
 
-function BuyDetail({ route }) {
+function TaxiDetail({ route }) {
   const { item } = route.params;
   const [loading, setLoading] = useState(false);
   const [like, setLike] = useState(false);
-  // const [imageList, setImageList] = useState([
-  //   // "https://images.pexels.com/photos/6533788/pexels-photo-6533788.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  //   // "https://images.pexels.com/photos/6439149/pexels-photo-6439149.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-  // ]);
-  const [currentIndex, setCurrentIndex] = useState(1);
-
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
 
   const {
     loginState: { access_token },
@@ -154,22 +190,17 @@ function BuyDetail({ route }) {
   };
   const [data, setData] = useState({});
 
-  const [imageArray, setImageArray] = useState([]);
-  const [getItems, setGetItems] = useState({});
   const getData = () => {
     setLoading(true);
     console.log(headers);
     axiosInstance({
-      url: `/v1/posts/purchase/${item.id}/`,
+      url: `/v1/posts/taxi/${item.id}/`,
       method: "GET",
       headers,
     })
       .then((response) => {
         console.log("data", response.data);
         setData(response.data);
-        setImageArray(
-          response.data.product_img.map((item, index) => item.image)
-        );
       })
       .catch((error) => {
         setLoading(false);
@@ -200,7 +231,7 @@ function BuyDetail({ route }) {
 
   const handleLike = () => {
     axiosInstance({
-      url: `/v1/posts/purchase/${data.id}/like/`,
+      url: `/v1/posts/taxi/${data.id}/like/`,
       method: "POST",
       headers,
     })
@@ -217,43 +248,6 @@ function BuyDetail({ route }) {
 
   return (
     <Container>
-      {/*Modal 창 끝 */}
-      <Modal
-        isVisible={isModalVisible}
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <View
-          style={{
-            flex: 0.75,
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <SliderBox
-            autoplay={false} //자동 슬라이드 넘김
-            circleLoop={true} //맨끝 슬라이드에서 다시 첫슬라이드로
-            resizeMode="contain" // 이미지 사이즈 조절값
-            images={imageArray} // 이미지 주소 리스트
-            dotColor="#dbdbdb" // 아래 점 투명으로 안보이게 가림
-            inactiveDotColor="rgba(128, 128, 128, 0.92)"
-            ImageComponentStyle={{ width: wp("100%"), height: hp("60%") }} // 이미지 Style 적용
-            currentImageEmitter={(index) => {
-              // 이미지가 바뀔때 어떤 동작을 할지 설정
-              setCurrentIndex(index + 1);
-            }}
-            onCurrentImagePressed={(index) => toggleModal()}
-          />
-          <TouchableOpacity onPress={toggleModal}>
-            <MaterialIcons name="cancel" size={50} color="white" />
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      {/*Modal 창 끝 */}
       <HeaderTime remainTime={remainTime} loading={loading} />
       {/* Header끝 */}
       {/*내용시작 */}
@@ -262,43 +256,61 @@ function BuyDetail({ route }) {
           <Profile>
             <ProfleImgCircle>
               <Ionicons name="person-circle-sharp" size={50} color="#9e9e9e" />
-            </ProfleImgCircle>
-            <View style={{ justifyContent: "center", alginItems: "center" }}>
               <Text style={{ fontSize: 20 }}>
-                {JSON.stringify(data.author)}
+                zabcd121
+                {/* {JSON.stringify(data.author)} */}
               </Text>
-            </View>
+            </ProfleImgCircle>
+            <CreateParser>
+              <Text style={{ fontSize: 12, color: "#9e9e9e" }}>
+                {createdTimeParser(item.created_at)}
+              </Text>
+            </CreateParser>
           </Profile>
           <MainContents>
             <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 5 }}>
               {item.title}
             </Text>
-            <Text style={{ fontSize: 12, paddingBottom: 10, color: "#9e9e9e" }}>
-              {createdTimeParser(item.created_at)}
-            </Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {item.price}원 | 1인당 약{" "}
-              {Math.ceil(item.price / item.join_limitation)}원
-            </Text>
           </MainContents>
-
-          <ImageSliderBlock>
-            <SliderBox
-              autoplay={false} //자동 슬라이드 넘김
-              circleLoop={true} //맨끝 슬라이드에서 다시 첫슬라이드로
-              resizeMode="cover" // 이미지 사이즈 조절값
-              images={imageArray} // 이미지 주소 리스트
-              dotColor="#dbdbdb" // 아래 점 투명으로 안보이게 가림
-              inactiveDotColor="rgba(128, 128, 128, 0.92)"
-              ImageComponentStyle={{ width: wp("90%"), height: 400 }} // 이미지 Style 적용
-              currentImageEmitter={(index) => {
-                // 이미지가 바뀔때 어떤 동작을 할지 설정
-                setCurrentIndex(index + 1);
-              }}
-              onCurrentImagePressed={(index) => toggleModal()}
-            />
-          </ImageSliderBlock>
-
+          <InformationBlock>
+            <FirsttBlock>
+              <StartLocation>
+                <Text
+                  style={{ fontSize: 15, fontWeight: "bold", color: "#616161" }}
+                >
+                  출발
+                </Text>
+              </StartLocation>
+              <Row>
+                <FontAwesome name="long-arrow-down" size={30} color="#ff3d00" />
+              </Row>
+              <Destination>
+                <Text
+                  style={{ fontSize: 15, fontWeight: "bold", color: "#616161" }}
+                >
+                  도착
+                </Text>
+              </Destination>
+            </FirsttBlock>
+            <MiddleBlock>
+              <TopLocation>
+                <Text
+                  style={{ fontSize: 19, fontWeight: "bold" }}
+                  numberOfLines={2}
+                >
+                  {item.arrival_place}
+                </Text>
+              </TopLocation>
+              <BottomLocation>
+                <Text
+                  style={{ fontSize: 19, fontWeight: "bold" }}
+                  numberOfLines={2}
+                >
+                  {item.departure_place}
+                </Text>
+              </BottomLocation>
+            </MiddleBlock>
+          </InformationBlock>
           <MainContents>
             <Text style={{ fontSize: 18, marginBottom: 10 }}>
               {data.content}
@@ -327,7 +339,7 @@ function BuyDetail({ route }) {
         <Participant data={data} whoIs={"작성자"} />
         <Participant data={data} whoIs={"참가자"} />
 
-        <BuyComment item={item} />
+        <TaxiComment item={item} />
       </Contents>
 
       {/*내용끝*/}
@@ -369,28 +381,4 @@ function BuyDetail({ route }) {
   );
 }
 
-export default BuyDetail;
-
-{
-  /* <View
-          style={{
-            position: "absolute",
-            bottom: "9.8%",
-            right: 5,
-            paddingTop: 4,
-            paddingRight: 6,
-            paddingBottom: 4,
-            paddingLeft: 10,
-            borderTopLeftRadius: 14,
-            borderBottomLeftRadius: 14,
-            backgroundColor: "rgba(0,0,0,0.6)",
-          }}
-        >
-          <Text style={{ fontSize: 10, color: "#ffffff" }}>
-            {/* //총 이미지 갯수중 현재 index가 몇인지를 나타낸다 */
-}
-{
-  /* {currentIndex}/{imageArray.length}
-          </Text>
-        </View> */
-}
+export default TaxiDetail;

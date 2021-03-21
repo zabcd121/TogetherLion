@@ -50,7 +50,7 @@ const SubmitButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-function BuyComment({ item }) {
+function TaxiComment({ item }) {
   const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([]);
   const [text, setText] = useState("");
@@ -67,7 +67,7 @@ function BuyComment({ item }) {
     setLoading(true);
     console.log(headers);
     await axiosInstance({
-      url: `/v1/posts/purchase/${item.id}/comments/`,
+      url: `/v1/posts/taxi/${item.id}/comments/`,
       method: "GET",
       headers,
     })
@@ -99,7 +99,7 @@ function BuyComment({ item }) {
     }
 
     axiosInstance({
-      url: `/v1/posts/purchase/${item.id}/comments/`,
+      url: `/v1/posts/taxi/${item.id}/comments/`,
       method: "POST",
       headers,
       data: { content: text },
@@ -115,7 +115,7 @@ function BuyComment({ item }) {
   };
 
   return (
-    <View>
+    <View style={{}}>
       <CommentNumber>
         <Padding>
           <Text
@@ -130,7 +130,14 @@ function BuyComment({ item }) {
           </Text>
         </Padding>
       </CommentNumber>
-      <View style={{ marginBottom: 20 }}>
+      <View
+        style={{
+          flex: 1,
+          marginBottom: 20,
+          backgroundColor: "yellow",
+          flexGrow: 1,
+        }}
+      >
         {comments.map((comment, index) => {
           return (
             <>
@@ -212,4 +219,4 @@ function BuyComment({ item }) {
   );
 }
 
-export default BuyComment;
+export default TaxiComment;
