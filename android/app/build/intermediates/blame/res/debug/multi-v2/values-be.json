@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\TogetherLion\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-be\\values-be.xml",
+            "outputFile": "D:\\react-native\\TogetherLion\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-be\\values-be.xml",
             "map": [
                 {
                     "source": "C:\\Users\\kim\\.gradle\\caches\\transforms-2\\files-2.1\\57a7755ec7f8569f8e81b10deb53e9cc\\core-1.1.0\\res\\values-be\\values-be.xml",

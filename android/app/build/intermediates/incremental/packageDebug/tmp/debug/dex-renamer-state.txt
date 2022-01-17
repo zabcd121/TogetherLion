@@ -1,4 +1,7 @@
-#Fri Dec 24 09:53:53 KST 2021
+#Mon Jan 17 13:42:52 KST 2022
+base.1=D\:\\react-native\\TogetherLion\\android\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.1=classes.dex
 base.0=D\:\\TogetherLion\\android\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+renamed.1=classes2.dex
 renamed.0=classes.dex
 path.0=classes.dex

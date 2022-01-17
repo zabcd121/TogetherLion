@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\TogetherLion\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-tl\\values-tl.xml",
+            "outputFile": "D:\\react-native\\TogetherLion\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-tl\\values-tl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\kim\\.gradle\\caches\\transforms-2\\files-2.1\\7dca42c052e713f328992d116d98f349\\appcompat-1.1.0\\res\\values-tl\\values-tl.xml",
